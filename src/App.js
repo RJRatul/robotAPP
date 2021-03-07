@@ -1,23 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import Search from './component/Search';
+import Box from './component/Box';
+import {useState,useEffect} from 'react'
+import axios from 'axios'
+
 
 function App() {
+  const[search,setSearch] = useState('');
+  const[array,setArray] = useState([]);
+
+  
+  useEffect(() => {
+    axios.get("https://jsonplaceholder.typicode.com/users").then(res => setArray (res.data)).catch(err => console.log(err)) 
+}, [])
+const filterRobots = array.filter((robot) =>
+robot.name.toLowerCase().includes(search.toLowerCase())
+);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>ROBO FRIENDS</h1>
+      <Search value={search} setSearch={setSearch}/>
+      <div><Box array={filterRobots}/></div>
     </div>
   );
 }
